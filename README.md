@@ -1,48 +1,67 @@
-# Found on the Oval — Starter
+# Found on the Oval
 
-DESIGN 4106 · Intro to AR Training 2
+A location-based AR experience featuring a pine marten, a macaw, and three pine beetles.
 
-![screenshot](screenshot.png)
+Walk to the marked location on the Oval to unlock the models. Choose a model on the webpage, then tap **View in AR** to place it in your surroundings.
 
-A .glb stays locked until your phone's GPS says you are at the spot. Then it opens in [model-viewer](https://modelviewer.dev), with a **View in AR** button. One HTML file, no install.
+## Try It
 
-## Test on your computer (VS Code + Live Server)
+- [Live experience](https://hexishere.github.io/Project-2/)
+- [Test without walking](https://hexishere.github.io/Project-2/?fake)
 
-1. Open the project folder in VS Code
-2. Make sure you have the **Live Server** extension (Extensions panel → search "Live Server" → Install)
-3. Right-click `index.html` → **Open with Live Server**
-4. Add `?fake` to the address (e.g. `http://127.0.0.1:5500/index.html?fake`) and click Start. It simulates walking in from 60 m.
+Open the page in Safari on iPhone or Chrome on a supported Android phone.
 
-## Test on location (GitHub Pages)
+1. Tap **Start**.
+2. Allow location access for the live experience.
+3. Walk within 15 meters of the target.
+4. Select a model.
+5. Tap **View in AR** and follow the placement instructions.
 
-1. Push your project to your GitHub repo
-2. On the repo page: **Settings → Pages → Source: Deploy from a branch → `main` / `(root)` → Save**
-3. Wait a minute, then open `https://<your-username>.github.io/<your-repo>/` on your phone
-4. Tap Start and allow location. Walk to your spot.
+The test link simulates approaching the target and unlocks the models after approximately 10 seconds.
 
-Each time you push, the page updates within a minute or two.
+## Models
 
-## Edit
-
-| File | What |
+| Model | AR Placement |
 |---|---|
-| `index.html` → `TARGET` | your spot's latitude/longitude |
-| `index.html` → `RADIUS` | how close (metres) before it opens |
-| `models/object.glb` | your model (replace the placeholder, keep the name) |
+| Pine marten | Ground |
+| Macaw | Ground |
+| Three pine beetles | Wall |
 
-**Finding your coordinates:** stand on your spot with the page open; it prints your live coordinates. Wait for ±10 m or better, then paste them into `TARGET`.
+Models are selected on the same webpage and viewed one at a time. Exit AR to select another model.
 
-## How it works
+## Target Location
 
 ```js
-navigator.geolocation.watchPosition(onPosition);   // GPS listener
-// in onPosition: if distance to TARGET < RADIUS → show <model-viewer>
+const TARGET = { lat: 40.000213, lon: -83.013804 };
+const RADIUS = 15;
 ```
 
-## My project
+GPS controls when the models unlock. Their placement in AR is adjusted by the viewer rather than automatically fixed to the GPS coordinates.
 
-- **Title**
-- **Live page: (your url)**
-- **Coordinates: (our spot coordinates)**
-- **Intent: (one line: how does your 3d object respond to the qualities of the spot)**
-- **Video: (.mp4, stable shot, < 2 min.)**
+## Project Files
+
+Keep these files together in the repository root:
+
+```text
+index.html
+marten_back_fixed.glb
+parrot_macaw_animated.glb
+three_pinebeetles_rigged_animated.glb
+README.md
+```
+
+## Scout Mode
+
+Add `?scout` to the webpage URL to record candidate locations.
+
+Tap **Mark this spot** to save the current coordinates with a note. Saved spots remain in that browser. To change the target, manually copy the chosen coordinates into `TARGET` in `index.html`.
+
+## Publishing
+
+The project is hosted with GitHub Pages. After editing files, commit and push the changes to the `main` branch, then wait for deployment to finish.
+
+## Technology
+
+Built with HTML, CSS, JavaScript, the browser Geolocation API, and Google's `<model-viewer>`.
+
+AR availability and wall placement behavior depend on the device and browser. GPS accuracy varies with surroundings.
