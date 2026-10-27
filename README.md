@@ -1,4 +1,10 @@
-# Found on the Oval
+# P: A Hollow Encounter
+
+## Design Concept
+
+Inspired by a P-shaped tree hollow, this AR scene brings together a pine marten, a parrot, and pine beetles, connecting language, wildlife, and place through the letter P.
+
+## About the Experience
 
 A location-based AR scene containing a pine marten on the left, a macaw on the right, and three pine beetles arranged vertically at the back. All three models appear together and share a 30-second animation timeline.
 
