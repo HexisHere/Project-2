@@ -1,5 +1,9 @@
 # P: A Hollow Encounter
 
+## Names
+
+Yiyi Liu, Jenna Su
+
 ## Design Concept
 
 Inspired by a P-shaped tree hollow, this AR scene brings together a pine marten, a parrot, and pine beetles, connecting language, wildlife, and place through the letter P.
@@ -49,3 +53,7 @@ Commit and push `index.html`, both combined scene files, and this README to `mai
 The combined GLB contains three skeletons and one animation driving all three groups. The USDZ contains three skeletons and three skeletal animation sources with 721 time samples each. Animation data and layout were checked locally; actual AR playback must still be tested on the target phone.
 
 Built with HTML, CSS, JavaScript, Geolocation, and Google `<model-viewer>`.
+
+## Screenshot
+
+![AR scvene on the Oval](ar-screenshot.jpeg.png)
