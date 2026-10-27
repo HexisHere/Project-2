@@ -1,67 +1,45 @@
 # Found on the Oval
 
-A location-based AR experience featuring a pine marten, a macaw, and three pine beetles.
-
-Walk to the marked location on the Oval to unlock the models. Choose a model on the webpage, then tap **View in AR** to place it in your surroundings.
+A location-based AR scene containing a pine marten on the left, a macaw on the right, and three pine beetles arranged vertically at the back. All three models appear together and share a 30-second animation timeline.
 
 ## Try It
 
 - [Live experience](https://hexishere.github.io/Project-2/)
 - [Test without walking](https://hexishere.github.io/Project-2/?fake)
 
-Open the page in Safari on iPhone or Chrome on a supported Android phone.
+1. Open the page in Safari on iPhone or Chrome on a supported Android phone.
+2. Tap **Start**. For the live experience, allow location and walk within 15 meters of the target. The test link simulates approaching the spot in approximately 10 seconds.
+3. Tap **View all three in AR**.
+4. Scan the ground and place the entire scene. Move or scale the scene as a whole.
 
-1. Tap **Start**.
-2. Allow location access for the live experience.
-3. Walk within 15 meters of the target.
-4. Select a model.
-5. Tap **View in AR** and follow the placement instructions.
+The animals have fixed relative positions. The beetles stand vertically behind the other animals; they do not independently attach to a detected real wall.
 
-The test link simulates approaching the target and unlocks the models after approximately 10 seconds.
+## Files
 
-## Models
+- `index.html`: GPS unlock and AR viewer.
+- `oval_three_animals.glb`: combined scene with a single animation clip, `All_Animals_Loop`, for web and supported Android viewers.
+- `oval_three_animals.usdz`: separately exported animated scene for iPhone AR Quick Look, supplied through `ios-src`.
+- Original GLB files: source models retained for editing.
 
-| Model | AR Placement |
-|---|---|
-| Pine marten | Ground |
-| Macaw | Ground |
-| Three pine beetles | Wall |
-
-Models are selected on the same webpage and viewed one at a time. Exit AR to select another model.
-
-## Target Location
+## Target
 
 ```js
 const TARGET = { lat: 40.000213, lon: -83.013804 };
 const RADIUS = 15;
 ```
 
-GPS controls when the models unlock. Their placement in AR is adjusted by the viewer rather than automatically fixed to the GPS coordinates.
-
-## Project Files
-
-Keep these files together in the repository root:
-
-```text
-index.html
-marten_back_fixed.glb
-parrot_macaw_animated.glb
-three_pinebeetles_rigged_animated.glb
-README.md
-```
+GPS unlocks the scene. AR placement is performed by the viewer and is not fixed precisely to the GPS coordinate.
 
 ## Scout Mode
 
-Add `?scout` to the webpage URL to record candidate locations.
+Add `?scout` to record candidate locations with **Mark this spot**. Records are stored in the current browser. Copy a chosen coordinate into `TARGET` manually.
 
-Tap **Mark this spot** to save the current coordinates with a note. Saved spots remain in that browser. To change the target, manually copy the chosen coordinates into `TARGET` in `index.html`.
+## Deployment
 
-## Publishing
+Commit and push `index.html`, both combined scene files, and this README to `main`. Wait for the GitHub Pages deployment to complete before testing.
 
-The project is hosted with GitHub Pages. After editing files, commit and push the changes to the `main` branch, then wait for deployment to finish.
+## Validation
 
-## Technology
+The combined GLB contains three skeletons and one animation driving all three groups. The USDZ contains three skeletons and three skeletal animation sources with 721 time samples each. Animation data and layout were checked locally; actual AR playback must still be tested on the target phone.
 
-Built with HTML, CSS, JavaScript, the browser Geolocation API, and Google's `<model-viewer>`.
-
-AR availability and wall placement behavior depend on the device and browser. GPS accuracy varies with surroundings.
+Built with HTML, CSS, JavaScript, Geolocation, and Google `<model-viewer>`.

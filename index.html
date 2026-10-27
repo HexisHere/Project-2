@@ -21,14 +21,11 @@
     #spots li { background: #fff; border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
     #spots b { font-family: system-ui, sans-serif; }
   </style>
-<style>
-#chooser{display:none;position:fixed;top:12px;left:12px;right:12px;z-index:20;background:white;border-radius:16px;padding:12px;text-align:center}
-#chooser.open{display:block} #chooser button{padding:10px 12px;font-size:15px;margin:3px;background:#555} #chooser button[aria-pressed="true"]{background:#b00} #hint{font-size:14px;margin:8px 0 0}
-</style></head>
+</head>
 <body>
   <div id="panel">
     <h1>Found on the Oval</h1>
-    <p>Walk to the spot to unlock the object.</p>
+    <p>Walk to the spot to unlock all three animals together.</p>
     <button id="go">Start</button>
     <div id="status"></div>
     <div id="coords"></div>
@@ -41,10 +38,10 @@
   </div>
 
   <!-- The object: hidden until you reach the spot. "View in AR" places it on the ground. -->
-  <model-viewer id="model" src="marten_back_fixed.glb" alt="Hidden object"
+  <model-viewer id="model" src="oval_three_animals.glb" ios-src="oval_three_animals.usdz" alt="Pine marten, macaw and three pine beetles together"
                 ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor"
-                camera-controls auto-rotate autoplay shadow-intensity="1">
-    <button slot="ar-button" id="ar">View in AR</button>
+                camera-controls autoplay animation-name="All_Animals_Loop" shadow-intensity="1">
+    <button slot="ar-button" id="ar">View all three in AR</button>
   </model-viewer>
 
   <script>
@@ -144,27 +141,5 @@
       return ["N", "NE", "E", "SE", "S", "SW", "W", "NW"][Math.round(((Math.atan2(y, x) / r + 360) % 360) / 45) % 8];
     }
   </script>
-<div id="chooser"><button data-choice="marten" aria-pressed="true">貂 · 地面</button><button data-choice="parrot" aria-pressed="false">鹦鹉 · 地面</button><button data-choice="beetles" aria-pressed="false">松甲虫 · 墙面</button><p id="hint" role="status">正在加载貂…</p></div>
-<script>
-const options = {
- marten: {src:'marten_back_fixed.glb',name:'貂',placement:'floor'},
- parrot: {src:'parrot_macaw_animated.glb',name:'鹦鹉',placement:'floor'},
- beetles: {src:'three_pinebeetles_rigged_animated.glb',name:'松甲虫',placement:'wall'}
-};
-const viewer = document.getElementById('model');
-const hint = document.getElementById('hint');
-let current = options.marten;
-function readyHint(){hint.textContent = viewer.loaded ? '点击 View in AR，扫描'+(current.placement==='wall'?'竖直墙面':'地面')+'并放置'+current.name+'。' : '正在加载'+current.name+'…';}
-document.querySelectorAll('[data-choice]').forEach(button=>{button.onclick=()=>{
- current=options[button.dataset.choice];
- viewer.setAttribute('ar-placement',current.placement);
- viewer.alt=current.name;
- viewer.src=current.src;
- document.querySelectorAll('[data-choice]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
- hint.textContent='正在加载'+current.name+'…';
-};});
-viewer.addEventListener('load',readyHint);
-viewer.addEventListener('error',()=>{hint.textContent='模型加载失败，请检查文件：'+current.src;});
-new MutationObserver(()=>{if(viewer.classList.contains('open')){document.getElementById('chooser').classList.add('open');readyHint();}}).observe(viewer,{attributes:true,attributeFilter:['class']});
-</script></body>
+</body>
 </html>
