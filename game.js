@@ -424,6 +424,49 @@ window.addEventListener('pagehide', () => {
   stopWatch();
   stopCamera();
 });
+function playOpening() {
+  const opening = $('story-opening');
+  opening.showModal();
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
+  const lines = Array.from(opening.querySelectorAll('.story-line'), paragraph => {
+    const source = document.createElement('span');
+    source.className = 'story-source';
+    source.textContent = paragraph.textContent;
+    const overlay = document.createElement('span');
+    overlay.setAttribute('aria-hidden', 'true');
+    const typed = document.createElement('span');
+    const tail = document.createElement('span');
+    tail.className = 'story-tail';
+    tail.textContent = source.textContent;
+    overlay.append(typed, tail);
+    paragraph.replaceChildren(source, overlay);
+    return { paragraph, typed, tail, text: source.textContent };
+  });
+
+  let row = 0;
+  let index = 0;
+  let timer;
+  function typeNext() {
+    if (!opening.open || row === lines.length) return;
+    const { paragraph, typed, tail, text } = lines[row];
+    index += 1;
+    typed.classList.add('story-typing');
+    typed.textContent = text.slice(0, index);
+    tail.textContent = text.slice(index);
+    if (index === text.length) {
+      paragraph.textContent = text;
+      index = 0;
+      row += 1;
+      timer = setTimeout(typeNext, 360);
+    } else {
+      timer = setTimeout(typeNext, 23);
+    }
+  }
+  opening.addEventListener('close', () => clearTimeout(timer), { once: true });
+  timer = setTimeout(typeNext, 250);
+}
+
 renderProgress();
-if (!scout) $('story-opening').showModal();
+if (!scout) playOpening();
 

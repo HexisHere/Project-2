@@ -59,6 +59,10 @@ dialog::backdrop { background: #211a1bc0; }
 .story-copy { max-width: 34rem; margin: auto; }
 .story-copy h2 { font-size: clamp(2rem, 7vw, 3.5rem); }
 .story-copy p { line-height: 1.55; }
+.story-line { display: grid; }
+.story-line > span { grid-area: 1 / 1; }
+.story-source, .story-tail { opacity: 0; }
+.story-typing::after { content: ''; position: absolute; border-left: 2px solid currentColor; height: 1em; margin-top: .23em; }
 .sprite-line { color: #f8d884; }
 .story-copy button { min-height: 44px; background: #f8d884; color: #211b12; font-weight: 700; }
 model-viewer { display: block; width: 100%; height: min(50dvh, 380px); background: #f1e9db; border-radius: 12px; }
