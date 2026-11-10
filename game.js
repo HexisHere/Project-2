@@ -14,6 +14,14 @@ const scout = params.has('scout');
 const demo = !scout && (params.has('demo') || params.has('fake'));
 const demoStops = stops.map((stop, i) => ({ ...stop, lat: 40 + i * .0006, lon: -83 }));
 const targets = demo ? demoStops : stops;
+// Map coordinates follow the approved yellow route on the supplied Oval basemap.
+const trailPins = [[789, 621], [581, 393], [629, 259], [756, 326], [637, 456]];
+const trailPaths = [
+  'M789 621 L744 573 703 529 668 491 637 456 609 425 581 393',
+  'M581 393 L598 358 613 312 629 259',
+  'M629 259 L663 256 692 252 720 250 738 283 768 315 756 326',
+  'M756 326 L719 367 683 407 637 456'
+];
 let progress = 0;
 let watch = null;
 let lastFix = null;
@@ -53,6 +61,35 @@ function routeProblem() {
   return '';
 }
 
+function svgElement(tag, attributes) {
+  const element = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [name, value] of Object.entries(attributes)) element.setAttribute(name, value);
+  return element;
+}
+
+function renderTrail() {
+  const completed = scout ? trailPaths : trailPaths.slice(0, Math.max(0, progress - 1));
+  $('trail-segments').replaceChildren(...completed.flatMap(d => [
+    svgElement('path', { d, class: 'trail-edge' }),
+    svgElement('path', { d, class: 'trail-line' })
+  ]));
+
+  const visiblePins = scout ? trailPins : trailPins.slice(0, progress + 1);
+  $('trail-stops').replaceChildren(...visiblePins.map(([x, y], index) => {
+    const next = !scout && index === progress;
+    const pin = svgElement('g', { class: next ? 'trail-pin next' : 'trail-pin', transform: 'translate(' + x + ' ' + y + ')' });
+    const label = svgElement('text', {});
+    label.textContent = index + 1;
+    pin.append(svgElement('circle', { r: 14 }), label);
+    return pin;
+  }));
+
+  const next = stops[progress];
+  $('trail-status').textContent = scout ? 'Scout view · all five candidate stops'
+    : next ? (progress === 0 ? 'Start at 1 · ' : 'Next: ' + (progress + 1) + ' · ') + next.name
+      : 'Trail complete · all five stops found';
+}
+
 function renderProgress() {
   document.documentElement.style.setProperty('--saturation', progress / stops.length);
   document.documentElement.style.setProperty('--accent', stops[progress - 1]?.color || '#626063');
@@ -61,6 +98,7 @@ function renderProgress() {
   $('view').hidden = progress === 0;
   $('finale').hidden = progress !== stops.length;
   document.documentElement.classList.toggle('has-color', progress > 0);
+  renderTrail();
   $('colors').replaceChildren(...stops.map((stop, i) => {
     const chip = document.createElement('li');
     chip.textContent = (i + 1) + ' · ' + stop.name + (i < progress ? ' ✓' : '');

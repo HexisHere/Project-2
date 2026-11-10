@@ -17,7 +17,7 @@
     <header>
       <p class="eyebrow">THE LITTLE P WORLD · THE OVAL</p>
       <h1>Follow the P</h1>
-      <p>The Oval has lost its colors. Follow the yellow trail and find the five little friends in order.</p>
+      <p>The Oval has lost its colors. Find the five little friends in order to reveal your trail.</p>
     </header>
     <section class="card" aria-label="Game progress">
       <div class="row"><strong id="count">0 / 5 colors</strong><button id="cameraToggle" type="button">Turn on camera</button></div>
@@ -39,9 +39,18 @@
         <button id="reset" type="button">Restart demo</button>
       </section>
     </section>
-    <figure>
-      <img id="map" src="map.png" alt="Concept map of the Oval with the walking route and five numbered stops.">
-      <figcaption>Concept route · GPS scout pending</figcaption>
+    <figure class="trail-map">
+      <figcaption>
+        <strong>Your trail</strong>
+        <span id="trail-status"></span>
+      </figcaption>
+      <svg id="map" viewBox="395 205 555 490" role="img" aria-labelledby="trail-title trail-status">
+        <title id="trail-title">The Oval trail map</title>
+        <image class="basemap" href="oval-basemap.png" width="1600" height="939"/>
+        <g id="trail-segments"></g>
+        <g id="trail-stops"></g>
+      </svg>
+      <p class="map-credit">Concept route · © OpenStreetMap contributors</p>
     </figure>
     <nav class="row" aria-label="Game modes">
       <a href="?">GPS game</a><a href="?demo">Desktop demo</a><a href="?scout">Scout points</a>
