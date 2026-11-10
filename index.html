@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Follow the P · The Oval</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=compact-ui">
   <script defer src="stops.js"></script>
   <script defer src="game.js?v=b363383a0826"></script>
 </head>
@@ -17,7 +17,7 @@
     <header>
       <p class="eyebrow">THE LITTLE P WORLD · THE OVAL</p>
       <h1>Follow the P</h1>
-      <p>The Oval has lost its colors. Find the five little friends in order to reveal your trail.</p>
+      <p class="intro">The Oval has lost its colors. Find the five little friends in order to reveal your trail.</p>
     </header>
     <section class="card" aria-label="Game progress">
       <div class="row"><strong id="count">0 / 5 colors</strong><button id="cameraToggle" type="button">Turn on camera</button></div>
@@ -34,9 +34,11 @@
         <textarea id="marks" readonly rows="5"></textarea>
       </section>
       <section id="demo" hidden aria-label="Demo controls">
-        <p>Simulate an arrival. Try a later stop first to test the lock.</p>
+        <div class="row demo-heading">
+          <span>Simulate an arrival</span>
+          <button id="reset" type="button">Restart demo</button>
+        </div>
         <div id="arrivals" class="row"></div>
-        <button id="reset" type="button">Restart demo</button>
       </section>
     </section>
     <figure class="trail-map">

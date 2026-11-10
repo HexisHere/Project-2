@@ -54,3 +54,34 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
 .camera-on dialog { background: #fafafae0; }
 .camera-on dialog::backdrop { background: #211a1b35; }
 .camera-on model-viewer { background: transparent; }
+.demo-heading { margin-bottom: .35rem; }
+
+@media (max-width: 600px) {
+  body { font-size: .875rem; line-height: 1.35; }
+  main { padding: 9px; }
+  header, .card { padding: 9px 11px; margin-bottom: 7px; border-radius: 14px; }
+  h1 { font-size: 1.65rem; }
+  .eyebrow { font-size: .62rem; }
+  .intro { font-size: .8rem; }
+  .row { gap: .3rem; }
+  button, select { min-height: 44px; padding: .3rem .6rem; }
+  #status { margin: .35rem 0; min-height: 0; }
+  #colors { gap: .25rem; margin: .25rem 0; }
+  #colors li { display: flex; align-items: center; padding: .15rem .4rem; font-size: .72rem; }
+  #colors li:has(button) { padding: 0; }
+  #colors li button { min-height: 44px; padding: 0 .4rem; }
+  #demo, #scout { margin-top: .35rem; }
+  .demo-heading { font-size: .75rem; margin-bottom: 0; }
+  #arrivals { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  #arrivals button { padding-inline: .1rem; font-size: .72rem; white-space: nowrap; }
+  figure { margin-bottom: 7px; }
+  .trail-map figcaption { display: flex; align-items: baseline; flex-wrap: wrap; gap: .2rem .5rem; padding: .4rem .65rem; font-size: .75rem; }
+  .trail-map figcaption strong { font-size: 1rem; }
+  nav { padding: .45rem .65rem; }
+  dialog { padding: .7rem; border-radius: 14px; }
+  dialog h2 { font-size: 1.25rem; }
+  #modelStatus { margin: .35rem 0; }
+  #modelStatus:empty { display: none; }
+  .camera-on main { padding-top: 47dvh; }
+  .camera-on header p { display: none; }
+}
