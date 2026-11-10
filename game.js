@@ -27,7 +27,10 @@ let watch = null;
 let lastFix = null;
 let cameraStream = null;
 let cameraPending = false;
-const status = (message) => { $('status').textContent = message; };
+const status = (message) => {
+  $('status').textContent = message;
+  $('camera-status').textContent = message;
+};
 
 function distance(lat, lon, target) {
   const r = Math.PI / 180;
@@ -95,6 +98,8 @@ function renderProgress() {
   document.documentElement.style.setProperty('--accent', stops[progress - 1]?.color || '#626063');
   $('go').classList.toggle('restored', progress > 0);
   $('count').textContent = progress + ' / ' + stops.length + ' colors';
+  $('camera-count').textContent = progress + ' / ' + stops.length;
+  $('camera-find').hidden = progress === 0;
   $('view').hidden = progress === 0;
   $('finale').hidden = progress !== stops.length;
   document.documentElement.classList.toggle('has-color', progress > 0);
@@ -145,7 +150,6 @@ function onPosition({ coords, timestamp }) {
     ? 'Next: stop ' + (progress + 1) + ' · ' + following.name + '.'
     : 'All five colors are back!'));
   if (!demo) navigator.vibrate?.(110);
-  if (cameraStream && !$('reward').open) showFind(progress - 1);
   if (!following) stopWatch();
 }
 
@@ -171,16 +175,29 @@ $('go').onclick = () => {
   }, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
 };
 
+function setCameraPanel(open) {
+  document.body.classList.toggle('camera-panel-open', open);
+  $('camera-panel-toggle').setAttribute('aria-expanded', String(open));
+  $('camera-panel-toggle').textContent = open ? 'Hide panel' : 'Map & game';
+}
+
 function stopCamera() {
   cameraStream?.getTracks().forEach((track) => track.stop());
   cameraStream = null;
   $('camera').srcObject = null;
   $('camera').hidden = true;
   document.body.classList.remove('camera-on');
+  $('camera-hud').hidden = true;
+  setCameraPanel(false);
   $('cameraToggle').textContent = 'Turn on camera';
 }
 
 $('cameraToggle').onclick = () => cameraStream ? stopCamera() : startCamera();
+$('camera-close').onclick = stopCamera;
+$('camera-panel-toggle').onclick = () => {
+  setCameraPanel($('camera-panel-toggle').getAttribute('aria-expanded') !== 'true');
+};
+$('camera-find').onclick = () => showFind(progress - 1);
 
 async function startCamera() {
   if (cameraPending) return;
@@ -191,6 +208,8 @@ async function startCamera() {
     $('camera').srcObject = cameraStream;
     $('camera').hidden = false;
     document.body.classList.add('camera-on');
+    setCameraPanel(false);
+    $('camera-hud').hidden = false;
     $('cameraToggle').textContent = 'Turn off camera';
   } catch {
     status('Camera unavailable. You can continue with the map.');

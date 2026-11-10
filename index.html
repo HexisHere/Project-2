@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Follow the P · The Oval</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=compact-ui">
+  <link rel="stylesheet" href="style.css?v=camera-hud">
   <script defer src="stops.js"></script>
-  <script defer src="game.js?v=b363383a0826"></script>
+  <script defer src="game.js?v=camera-hud"></script>
 </head>
 <body>
   <div class="world" aria-hidden="true">
     <video id="camera" autoplay muted playsinline hidden></video>
   </div>
-  <main>
+  <main id="game-panel">
     <header>
       <p class="eyebrow">THE LITTLE P WORLD · THE OVAL</p>
       <h1>Follow the P</h1>
@@ -58,6 +58,15 @@
       <a href="?">GPS game</a><a href="?demo">Desktop demo</a><a href="?scout">Scout points</a>
     </nav>
   </main>
+  <aside id="camera-hud" aria-label="Camera controls" hidden>
+    <p id="camera-status" role="status"></p>
+    <div class="camera-actions">
+      <strong id="camera-count">0 / 5</strong>
+      <button id="camera-panel-toggle" type="button" aria-controls="game-panel" aria-expanded="false">Map &amp; game</button>
+      <button id="camera-find" type="button" hidden>View find</button>
+      <button id="camera-close" type="button">Close camera</button>
+    </div>
+  </aside>
   <dialog id="reward">
     <div class="row"><h2 id="rewardTitle"></h2><form method="dialog"><button aria-label="Close find">Done</button></form></div>
     <p id="modelStatus" role="status"></p>

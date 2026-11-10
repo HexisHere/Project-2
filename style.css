@@ -50,7 +50,36 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
 :root:not(.has-color) { --paper: #fafafa; --ink: #252525; }
 :root:not(.has-color) body, :root:not(.has-color) #colors li { background-color: #e8e8e8; }
 :root:not(.has-color) a { color: #383838; }
-.camera-on main { padding-top: max(38dvh, 70px); }
+.camera-on { overflow: hidden; }
+.camera-on main { display: none; }
+.camera-on.camera-panel-open main {
+  display: block;
+  position: fixed;
+  inset: auto 0 calc(6rem + env(safe-area-inset-bottom)) 0;
+  max-height: 46dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+  border-radius: 14px;
+  background: var(--paper);
+}
+.camera-on main header, .camera-on main #cameraToggle { display: none; }
+#camera-hud {
+  position: fixed;
+  inset: auto 8px calc(8px + env(safe-area-inset-bottom)) 8px;
+  width: fit-content;
+  max-width: calc(100% - 16px);
+  margin-inline: auto;
+  padding: 5px 7px;
+  border-radius: 13px;
+  background: #242123e8;
+  color: white;
+  font-size: .75rem;
+}
+#camera-status { margin: 0 3px 3px; line-height: 1.3; max-width: 36ch; }
+.camera-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.camera-actions strong { padding-inline: 3px; white-space: nowrap; }
+.camera-actions button { min-height: 44px; padding: 3px 7px; color: white; background: #ffffff20; border-color: #ffffff40; white-space: nowrap; }
 .camera-on dialog { background: #fafafae0; }
 .camera-on dialog::backdrop { background: #211a1b35; }
 .camera-on model-viewer { background: transparent; }
@@ -82,6 +111,4 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
   dialog h2 { font-size: 1.25rem; }
   #modelStatus { margin: .35rem 0; }
   #modelStatus:empty { display: none; }
-  .camera-on main { padding-top: 47dvh; }
-  .camera-on header p { display: none; }
 }
