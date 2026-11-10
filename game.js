@@ -425,4 +425,5 @@ window.addEventListener('pagehide', () => {
   stopCamera();
 });
 renderProgress();
+if (!scout) $('story-opening').showModal();
 
