@@ -1,14 +1,14 @@
-// Fill in measured coordinates in map order after using ?scout.
+// Field coordinates recorded with ?scout, in game order.
 window.STOPS = [
-  { name: 'Pigeon', color: '#87bde2', colorName: 'Sky blue', lat: null, lon: null, radius: 15,
+  { name: 'Pigeon', color: '#87bde2', colorName: 'Sky blue', lat: 39.999029, lon: -83.012812, radius: 15,
     glb: 'models/new%20models/Pigeon.glb', animation: 'Natural_Shoulder_Preening_Loop_8s' },
-  { name: 'Pill bug', color: '#b5b2bd', colorName: 'Stone gray', lat: null, lon: null, radius: 15,
+  { name: 'Pill bug', color: '#b5b2bd', colorName: 'Stone gray', lat: 39.999873, lon: -83.013722, radius: 15,
     glb: 'models/new%20models/Pill_Bug.glb', animation: 'Oval_Climb_Full_Loop_12s' },
-  { name: 'Possum', color: '#f4a4bd', colorName: 'Petal pink', lat: null, lon: null, radius: 15,
+  { name: 'Possum', color: '#f4a4bd', colorName: 'Petal pink', lat: 40.000301, lon: -83.013762, radius: 15,
     glb: 'models/new%20models/Possum.glb', animation: 'Walnut_Snack_Loop_6s' },
-  { name: 'Praying mantis', color: '#73bd91', colorName: 'Leaf green', lat: null, lon: null, radius: 15,
+  { name: 'Praying mantis', color: '#73bd91', colorName: 'Leaf green', lat: 40.000089, lon: -83.011862, radius: 15,
     glb: 'models/new%20models/Praying.glb', animation: 'Foreleg_Face_Grooming_Loop_8s' },
-  { name: 'Painted lady', color: '#f5bc64', colorName: 'Marigold', lat: null, lon: null, radius: 15,
+  { name: 'Painted lady', color: '#f5bc64', colorName: 'Marigold', lat: 39.999560, lon: -83.013417, radius: 15,
     glb: 'models/new%20models/Painted_Lady.glb', animation: 'Infinity_Flight_Full_Circuit_Loop_8s' }
 ];
 
