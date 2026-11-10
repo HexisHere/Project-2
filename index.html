@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Follow the P · The Oval</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=camera-hud">
+  <link rel="stylesheet" href="style.css?v=p-tree-bonus">
   <script defer src="stops.js"></script>
-  <script defer src="game.js?v=camera-hud"></script>
+  <script defer src="game.js?v=p-tree-bonus"></script>
 </head>
 <body>
   <div class="world" aria-hidden="true">
@@ -25,7 +25,7 @@
       <p id="status" role="status"></p>
       <button class="primary" id="go" type="button">Start GPS walk</button>
       <button id="view" type="button" hidden>View latest find</button>
-      <button id="finale" type="button" hidden>View the bonus reunion</button>
+      <button id="finale" type="button" hidden></button>
       <section id="scout" hidden aria-label="Scout tools">
         <label for="slot">Stop to record</label>
         <select id="slot"></select>
@@ -66,6 +66,7 @@
       <button id="camera-find" type="button" hidden>View find</button>
       <button id="camera-close" type="button">Close camera</button>
     </div>
+    <button id="camera-bonus" type="button" hidden></button>
   </aside>
   <dialog id="reward">
     <div class="row"><h2 id="rewardTitle"></h2><form method="dialog"><button aria-label="Close find">Done</button></form></div>

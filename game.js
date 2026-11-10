@@ -23,6 +23,9 @@ const trailPaths = [
   'M540 314 L380 487'
 ];
 let progress = 0;
+const bonusStop = 2; // Stop 3, the P tree.
+let bonus = 'locked';
+const bonusClue = 'Remember the tree with a connection to the letter P? Go back there to find the Bonus Reunion.';
 let watch = null;
 let lastFix = null;
 let cameraStream = null;
@@ -101,7 +104,7 @@ function renderProgress() {
   $('camera-count').textContent = progress + ' / ' + stops.length;
   $('camera-find').hidden = progress === 0;
   $('view').hidden = progress === 0;
-  $('finale').hidden = progress !== stops.length;
+  renderBonus();
   document.documentElement.classList.toggle('has-color', progress > 0);
   renderTrail();
   $('colors').replaceChildren(...stops.map((stop, i) => {
@@ -119,6 +122,15 @@ function renderProgress() {
   }));
 }
 
+function renderBonus() {
+  const label = bonus === 'collected' ? 'View Bonus Reunion'
+    : bonus === 'return' ? 'Read the P tree clue' : 'Congratulations! Bonus Reunion unlocked';
+  for (const id of ['finale', 'camera-bonus']) {
+    $(id).hidden = bonus === 'locked';
+    $(id).textContent = label;
+  }
+}
+
 function onPosition({ coords, timestamp }) {
   const { latitude, longitude, accuracy } = coords;
   if (scout) {
@@ -127,8 +139,20 @@ function onPosition({ coords, timestamp }) {
     status(latitude.toFixed(6) + ', ' + longitude.toFixed(6) + ' · ±' + Math.round(accuracy) + ' m');
     return;
   }
-  const next = targets[progress];
+  const returning = bonus === 'return';
+  const next = targets[returning ? bonusStop : progress];
   if (!next) return;
+  if (returning) {
+    if (Date.now() - timestamp <= 15000 && accuracy <= next.radius &&
+        distance(latitude, longitude, next) <= next.radius) {
+      bonus = 'collected';
+      renderBonus();
+      stopWatch();
+      status('You found the P tree! Bonus Reunion is ready.');
+      showModel(window.FINALE, window.FINALE.name);
+    }
+    return;
+  }
   const label = 'Stop ' + (progress + 1) + ' · ' + next.name;
   if (Date.now() - timestamp > 15000 || accuracy > next.radius) {
     status(label + ' · Waiting for a fresh GPS fix within ±' + next.radius + ' m.');
@@ -150,7 +174,7 @@ function onPosition({ coords, timestamp }) {
     ? 'Next: stop ' + (progress + 1) + ' · ' + following.name + '.'
     : 'All five colors are back!'));
   if (!demo) navigator.vibrate?.(110);
-  if (!following) stopWatch();
+  showFind(progress - 1);
 }
 
 function stopWatch() {
@@ -219,8 +243,12 @@ async function startCamera() {
 }
 
 $('view').onclick = () => showFind(progress - 1);
-$('finale').onclick = () => {
-  if (progress === stops.length) showModel(window.FINALE, window.FINALE.name);
+$('finale').onclick = $('camera-bonus').onclick = () => {
+  if (bonus === 'locked') return;
+  if (bonus === 'collected') return showModel(window.FINALE, window.FINALE.name);
+  bonus = 'return';
+  renderBonus();
+  status(bonusClue);
 };
 
 function showFind(index) {
@@ -249,7 +277,14 @@ function showModel(stop, title) {
     ar.textContent = 'Place in AR';
     ar.addEventListener('click', stopCamera, { capture: true });
     viewer.append(ar);
-    viewer.addEventListener('load', () => { $('modelStatus').textContent = ''; });
+    viewer.addEventListener('load', () => {
+      if (viewer.parentNode !== $('preview')) return;
+      $('modelStatus').textContent = '';
+      if (stop === stops[stops.length - 1] && bonus === 'locked') {
+        bonus = 'clue';
+        renderBonus();
+      }
+    });
     viewer.addEventListener('error', () => { $('modelStatus').textContent = 'Could not load this model. Check the model path and connection.'; });
     $('preview').append(viewer);
     setTimeout(() => {
@@ -258,7 +293,7 @@ function showModel(stop, title) {
       }
     }, 8000);
   }
-  $('reward').showModal();
+  if (!$('reward').open) $('reward').showModal();
 }
 $('reward').addEventListener('close', () => $('preview').replaceChildren());
 
@@ -300,6 +335,7 @@ if (scout) {
   });
   $('reset').onclick = () => {
     progress = 0;
+    bonus = 'locked';
     renderProgress();
     status('Demo · Start at stop 1.');
   };

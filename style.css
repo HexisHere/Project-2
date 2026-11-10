@@ -80,6 +80,8 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
 .camera-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 .camera-actions strong { padding-inline: 3px; white-space: nowrap; }
 .camera-actions button { min-height: 44px; padding: 3px 7px; color: white; background: #ffffff20; border-color: #ffffff40; white-space: nowrap; }
+#camera-bonus { width: 100%; min-height: 44px; margin-top: 4px; background: #f8c44f; color: #30252c; font-weight: 700; }
+.camera-on.camera-panel-open:has(#camera-bonus:not([hidden])) main { bottom: calc(9rem + env(safe-area-inset-bottom)); }
 .camera-on dialog { background: #fafafae0; }
 .camera-on dialog::backdrop { background: #211a1b35; }
 .camera-on model-viewer { background: transparent; }
