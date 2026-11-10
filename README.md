@@ -4,9 +4,9 @@
 
 Yiyi Liu, Jenna Su
 
-## Design Concept
+## Concept
 
-Inspired by a P-shaped tree hollow, this AR scene brings together a pine marten, a parrot, and pine beetles, connecting language, wildlife, and place through the letter P.
+“Follow the P” is an AR scavenger hunt set in the Oval at Ohio State University. Players take on the role of a student who wakes up to find they’ve suddenly lost their ability to see color and, guided by a fairy, must search for five animals. The locations are set at trail entrances, turns, and intersections, encouraging players to walk along existing paths while also paying attention to corners they might normally overlook. Each time a player finds an animal in order, the camera view regains some color, and the hand-drawn map fills in a segment of the route they’ve traveled while marking the next stop. Once all five animals are collected, the complete P-shaped route is revealed. The final clue invites players to return to the P-shaped tree at the third stop to unlock a hidden scene of the animals reuniting, making the places they’ve walked through worth a second look.
 
 ## About the Experience
 
