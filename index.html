@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Follow the P · The Oval</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=story-ending">
+  <link rel="stylesheet" href="style.css?v=camera-layout">
   <script defer src="stops.js?v=five-usdz"></script>
-  <script defer src="game.js?v=story-ending"></script>
+  <script defer src="game.js?v=camera-layout"></script>
 </head>
 <body>
   <div class="world" aria-hidden="true">
@@ -19,7 +19,7 @@
       <h1>Follow the P</h1>
       <p class="intro">The Oval has lost its colors. Find the five little friends in order to reveal your trail.</p>
     </header>
-    <section class="card" aria-label="Game progress">
+    <section id="animal-panel" class="card" aria-label="Game progress">
       <div class="row"><strong id="count">0 / 5 colors</strong><button id="cameraToggle" type="button">Turn on camera</button></div>
       <ol id="colors"></ol>
       <p id="status" role="status"></p>
@@ -41,7 +41,7 @@
         <div id="arrivals" class="row"></div>
       </section>
     </section>
-    <figure class="trail-map">
+    <figure id="map-panel" class="trail-map">
       <figcaption>
         <strong>Your trail</strong>
         <span id="trail-status"></span>
@@ -57,21 +57,27 @@
       <a href="?">GPS game</a><a href="?demo">Desktop demo</a><a href="?scout">Scout points</a>
     </nav>
   </main>
-  <aside id="camera-guide" aria-label="Direction to the next stop" hidden>
-    <svg id="guide-arrow" viewBox="0 0 48 48" aria-hidden="true" hidden>
-      <path d="M24 4 42 41 24 32 6 41Z"/>
-    </svg>
-    <span id="guide-label"></span>
-  </aside>
   <aside id="camera-hud" aria-label="Camera controls" hidden>
-    <p id="camera-status" role="status"></p>
-    <div class="camera-actions">
-      <strong id="camera-count">0 / 5</strong>
-      <button id="camera-panel-toggle" type="button" aria-controls="game-panel" aria-expanded="false">Map &amp; game</button>
-      <button id="camera-find" type="button" hidden>View find</button>
-      <button id="camera-close" type="button">Close camera</button>
+    <div class="camera-top">
+      <div class="camera-mission">
+        <span>MISSION</span>
+        <strong>Follow the P</strong>
+      </div>
+      <div class="camera-actions">
+        <button id="camera-panel-toggle" type="button" aria-controls="map-panel" aria-expanded="false">Map</button>
+        <button id="camera-animals" type="button" aria-controls="animal-panel" aria-expanded="false">Animals <span id="camera-count">0 / 5</span></button>
+      </div>
     </div>
-    <button id="camera-bonus" type="button" hidden></button>
+    <div class="camera-bottom">
+      <div id="camera-guide" aria-label="Direction to the next stop" hidden>
+        <svg id="guide-arrow" viewBox="0 0 48 48" aria-hidden="true" hidden>
+          <path d="M24 4 42 41 24 32 6 41Z"/>
+        </svg>
+        <span id="guide-label"></span>
+      </div>
+      <p id="camera-status" role="status"></p>
+      <button id="camera-bonus" type="button" hidden></button>
+    </div>
   </aside>
   <dialog id="story-opening" class="story-screen" aria-labelledby="story-title">
     <div class="story-copy">
@@ -80,7 +86,7 @@
       <p class="story-line">You're an Ohio State student. One morning, you wake up and look out the window. The sky, the trees, even your favorite hoodie. Everything is suddenly black and white.</p>
       <p class="story-line">Then a little sprite whispers in your head.</p>
       <p class="story-line sprite-line">“Your goal is to Follow the P! Find the five animals around the Oval in order, and they'll bring the colors back.”</p>
-      <form method="dialog"><button type="submit" autofocus>Begin the walk</button></form>
+      <form method="dialog"><button id="begin-walk" type="submit" autofocus>Begin the walk</button></form>
     </div>
   </dialog>
   <dialog id="story-ending" class="story-screen" aria-labelledby="ending-title">

@@ -172,7 +172,6 @@ function renderProgress() {
   $('go').classList.toggle('restored', progress > 0);
   $('count').textContent = progress + ' / ' + stops.length + ' colors';
   $('camera-count').textContent = progress + ' / ' + stops.length;
-  $('camera-find').hidden = progress === 0;
   $('view').hidden = progress === 0;
   renderBonus();
   document.documentElement.classList.toggle('has-color', progress > 0);
@@ -272,10 +271,12 @@ $('go').onclick = () => {
   }, { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 });
 };
 
-function setCameraPanel(open) {
-  document.body.classList.toggle('camera-panel-open', open);
-  $('camera-panel-toggle').setAttribute('aria-expanded', String(open));
-  $('camera-panel-toggle').textContent = open ? 'Hide panel' : 'Map & game';
+function setCameraPanel(panel) {
+  document.body.classList.toggle('camera-panel-open', Boolean(panel));
+  document.body.classList.toggle('camera-map-open', panel === 'map');
+  document.body.classList.toggle('camera-animals-open', panel === 'animals');
+  $('camera-panel-toggle').setAttribute('aria-expanded', String(panel === 'map'));
+  $('camera-animals').setAttribute('aria-expanded', String(panel === 'animals'));
 }
 
 function stopCamera() {
@@ -287,16 +288,21 @@ function stopCamera() {
   $('camera').hidden = true;
   document.body.classList.remove('camera-on');
   $('camera-hud').hidden = true;
-  setCameraPanel(false);
+  setCameraPanel(null);
   $('cameraToggle').textContent = 'Turn on camera';
 }
 
 $('cameraToggle').onclick = () => cameraStream ? stopCamera() : startCamera();
-$('camera-close').onclick = stopCamera;
 $('camera-panel-toggle').onclick = () => {
-  setCameraPanel($('camera-panel-toggle').getAttribute('aria-expanded') !== 'true');
+  setCameraPanel($('camera-panel-toggle').getAttribute('aria-expanded') === 'true' ? null : 'map');
 };
-$('camera-find').onclick = () => showFind(progress - 1);
+$('camera-animals').onclick = () => {
+  setCameraPanel($('camera-animals').getAttribute('aria-expanded') === 'true' ? null : 'animals');
+};
+$('begin-walk').onclick = () => {
+  void startCamera();
+  if (!demo && !scout) $('go').click();
+};
 
 async function startCamera() {
   if (cameraPending) return;
@@ -308,7 +314,7 @@ async function startCamera() {
     $('camera').srcObject = cameraStream;
     $('camera').hidden = false;
     document.body.classList.add('camera-on');
-    setCameraPanel(false);
+    setCameraPanel(null);
     $('camera-hud').hidden = false;
     renderGuide();
     $('cameraToggle').textContent = 'Turn off camera';

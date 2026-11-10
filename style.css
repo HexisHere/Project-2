@@ -77,33 +77,48 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
 .camera-on.camera-panel-open main {
   display: block;
   position: fixed;
-  inset: auto 0 calc(6rem + env(safe-area-inset-bottom)) 0;
-  max-height: 46dvh;
+  inset: calc(68px + env(safe-area-inset-top)) 10px auto auto;
+  width: min(440px, calc(100% - 20px));
+  max-height: 58dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 8px;
+  padding: 0;
   border-radius: 14px;
   background: var(--paper);
+  box-shadow: 0 3px 18px #0004;
+  z-index: 2;
 }
-.camera-on main header, .camera-on main #cameraToggle { display: none; }
+.camera-on main header, .camera-on main nav,
+.camera-map-open #animal-panel, .camera-animals-open #map-panel { display: none; }
+.camera-on #map-panel, .camera-on #animal-panel { margin: 0; }
 #camera-guide {
-  position: fixed;
-  top: calc(12px + env(safe-area-inset-top));
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  max-width: calc(100% - 24px);
-  padding: 5px 11px;
-  border-radius: 999px;
-  background: #242123e8;
-  color: white;
   font-size: .8rem;
-  pointer-events: none;
 }
 #guide-arrow { width: 36px; height: 36px; flex: 0 0 auto; fill: #f8c44f; stroke: #352818; stroke-width: 2; stroke-linejoin: round; }
-#camera-hud {
+.camera-top {
+  position: fixed;
+  inset: calc(10px + env(safe-area-inset-top)) 10px auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px;
+  color: white;
+  z-index: 3;
+  pointer-events: none;
+}
+.camera-mission, .camera-actions button { background: #242123e8; color: white; border-radius: 12px; }
+.camera-mission { display: grid; padding: 5px 9px; }
+.camera-mission span { color: #f8d884; font-size: .6rem; letter-spacing: .13em; }
+.camera-mission strong { font: bold 1rem Georgia, serif; white-space: nowrap; }
+.camera-actions { display: flex; gap: 4px; pointer-events: auto; }
+.camera-actions button { min-height: 44px; padding: 3px 8px; font-size: .75rem; border-color: #ffffff50; white-space: nowrap; }
+.camera-actions button[aria-expanded="true"] { background: #f8c44f; color: #30252c; }
+#camera-count { margin-inline-start: .15em; font-variant-numeric: tabular-nums; }
+.camera-bottom {
   position: fixed;
   inset: auto 8px calc(8px + env(safe-area-inset-bottom)) 8px;
   width: fit-content;
@@ -116,11 +131,8 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
   font-size: .75rem;
 }
 #camera-status { margin: 0 3px 3px; line-height: 1.3; max-width: 36ch; }
-.camera-actions { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
-.camera-actions strong { padding-inline: 3px; white-space: nowrap; }
-.camera-actions button { min-height: 44px; padding: 3px 7px; color: white; background: #ffffff20; border-color: #ffffff40; white-space: nowrap; }
+#camera-status:empty { display: none; }
 #camera-bonus { width: 100%; min-height: 44px; margin-top: 4px; background: #f8c44f; color: #30252c; font-weight: 700; }
-.camera-on.camera-panel-open:has(#camera-bonus:not([hidden])) main { bottom: calc(9rem + env(safe-area-inset-bottom)); }
 .camera-on dialog { background: #fafafae0; }
 .camera-on dialog::backdrop { background: #211a1b35; }
 .camera-on .story-screen, .camera-on .story-screen::backdrop { background: #000; }
