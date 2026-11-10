@@ -9,7 +9,7 @@ window.STOPS = [
   { name: 'Praying mantis', color: '#73bd91', colorName: 'Leaf green', lat: 40.000089, lon: -83.011862, radius: 15,
     glb: 'models/new%20models/Praying.glb', usdz: 'models/Five_Animals_USDZ/Praying.usdz', animation: 'Foreleg_Face_Grooming_Loop_8s' },
   { name: 'Painted lady', color: '#f5bc64', colorName: 'Marigold', lat: 39.999560, lon: -83.013417, radius: 15,
-    glb: 'models/new%20models/Painted_Lady.glb', usdz: 'models/Five_Animals_USDZ/Painted_Lady.usdz', animation: 'Infinity_Flight_Full_Circuit_Loop_8s' }
+    glb: 'models/new%20models/Painted_Lady.glb', usdz: 'models/Painted_Lady_Thick_Wings.usdz', animation: 'Infinity_Flight_Full_Circuit_Loop_8s' }
 ];
 
 window.FINALE = {
