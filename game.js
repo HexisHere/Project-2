@@ -14,13 +14,13 @@ const scout = params.has('scout');
 const demo = !scout && (params.has('demo') || params.has('fake'));
 const demoStops = stops.map((stop, i) => ({ ...stop, lat: 40 + i * .0006, lon: -83 }));
 const targets = demo ? demoStops : stops;
-// Map coordinates follow the approved yellow route on the supplied Oval basemap.
-const trailPins = [[789, 621], [581, 393], [629, 259], [756, 326], [637, 456]];
+// Map coordinates follow the approved yellow route on the watercolor illustration.
+const trailPins = [[558, 677], [319, 402], [366, 242], [540, 314], [380, 487]];
 const trailPaths = [
-  'M789 621 L744 573 703 529 668 491 637 456 609 425 581 393',
-  'M581 393 L598 358 613 312 629 259',
-  'M629 259 L663 256 692 252 720 250 738 283 768 315 756 326',
-  'M756 326 L719 367 683 407 637 456'
+  'M558 677 L380 487 319 402',
+  'M319 402 L366 242',
+  'M366 242 L469 229 540 314',
+  'M540 314 L380 487'
 ];
 let progress = 0;
 let watch = null;
@@ -80,7 +80,7 @@ function renderTrail() {
     const pin = svgElement('g', { class: next ? 'trail-pin next' : 'trail-pin', transform: 'translate(' + x + ' ' + y + ')' });
     const label = svgElement('text', {});
     label.textContent = index + 1;
-    pin.append(svgElement('circle', { r: 14 }), label);
+    pin.append(svgElement('circle', { r: 17 }), label);
     return pin;
   }));
 

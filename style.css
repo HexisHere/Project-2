@@ -27,16 +27,17 @@ button:disabled { opacity: .55; cursor: default; }
 textarea { display: block; width: 100%; margin-top: .25rem; border-radius: 10px; padding: .5rem; }
 figure { margin: 0 0 14px; border-radius: 14px; overflow: hidden; }
 #map { display: block; width: 100%; background: #f5f0e5; }
-.basemap { filter: saturate(var(--saturation)); transition: filter .9s; opacity: .76; }
-.trail-map { background: var(--paper); box-shadow: 0 3px 18px #0002; }
+.basemap { filter: saturate(var(--saturation)); transition: filter .9s; }
+.trail-map { background: #fff5e4; box-shadow: 0 3px 18px #472b2426; border: 1px solid #ad785844; }
+.trail-map figcaption { background: #fff5e4; }
 .trail-map figcaption { display: grid; gap: .12rem; padding: .7rem .9rem; font-size: .9rem; }
 .trail-map figcaption strong { font-family: Georgia, serif; font-size: 1.25rem; }
 .map-credit { margin: 0; padding: .4rem .9rem; font-size: .72rem; }
 .trail-edge, .trail-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.trail-edge { stroke: #64401d; stroke-width: 11; }
-.trail-line { stroke: #ffca4e; stroke-width: 7; }
+.trail-edge { stroke: #754528; stroke-width: 10; }
+.trail-line { stroke: #f8c44f; stroke-width: 6; }
 .trail-pin circle { stroke: #fffaf0; stroke-width: 3; fill: #65442a; }
-.trail-pin text { fill: white; font-size: 17px; font-weight: 800; text-anchor: middle; dominant-baseline: central; }
+.trail-pin text { fill: white; font: 800 23px Georgia, serif; text-anchor: middle; dominant-baseline: central; }
 .trail-pin.next circle { fill: #315453; }
 nav { padding: .7rem 1rem; border-radius: 14px; }
 a { color: #4b3948; }
