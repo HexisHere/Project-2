@@ -30,6 +30,8 @@ let watch = null;
 let lastFix = null;
 let cameraStream = null;
 let cameraPending = false;
+let cameraHeading = null;
+let compassListening = false;
 const status = (message) => {
   $('status').textContent = message;
   $('camera-status').textContent = message;
@@ -42,12 +44,79 @@ function distance(lat, lon, target) {
   return 12742000 * Math.asin(Math.sqrt(Math.min(1, a)));
 }
 
-function direction(lat, lon, target) {
+function bearing(lat, lon, target) {
   const r = Math.PI / 180;
   const delta = (target.lon - lon) * r;
   const y = Math.sin(delta) * Math.cos(target.lat * r);
   const x = Math.cos(lat * r) * Math.sin(target.lat * r) - Math.sin(lat * r) * Math.cos(target.lat * r) * Math.cos(delta);
-  return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round((Math.atan2(y, x) / r + 360) / 45) % 8];
+  return (Math.atan2(y, x) / r + 360) % 360;
+}
+
+function direction(degrees) {
+  return ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'][Math.round(degrees / 45) % 8];
+}
+
+function onOrientation(event) {
+  if (!cameraStream) return;
+  if (Number.isFinite(event.webkitCompassHeading) && !(event.webkitCompassAccuracy < 0)) {
+    cameraHeading = event.webkitCompassHeading;
+  } else if (event.absolute && [event.alpha, event.beta, event.gamma].every(Number.isFinite)) {
+    const r = Math.PI / 180;
+    const [a, b, g] = [event.alpha, event.beta, event.gamma].map(value => value * r);
+    const east = -Math.cos(a) * Math.sin(g) - Math.sin(a) * Math.sin(b) * Math.cos(g);
+    const north = -Math.sin(a) * Math.sin(g) + Math.cos(a) * Math.sin(b) * Math.cos(g);
+    // Project the rear camera's viewing direction onto the horizontal plane.
+    cameraHeading = Math.hypot(east, north) < .2 ? null : Math.atan2(east, north) / r;
+  } else {
+    return;
+  }
+  renderGuide();
+}
+
+async function enableCompass() {
+  if (demo || scout || compassListening) return;
+  const sensor = window.DeviceOrientationEvent;
+  try {
+    if (typeof sensor?.requestPermission === 'function' && await sensor.requestPermission(true) !== 'granted') return;
+    window.addEventListener('deviceorientationabsolute', onOrientation);
+    window.addEventListener('deviceorientation', onOrientation);
+    compassListening = true;
+  } catch {
+    // Cardinal directions remain available if the browser denies sensor access.
+  }
+}
+
+function renderGuide() {
+  const index = bonus === 'return' ? bonusStop : progress;
+  const target = targets[index];
+  const guide = $('camera-guide');
+  const arrow = $('guide-arrow');
+  guide.hidden = !cameraStream || scout || !target;
+  if (guide.hidden) return;
+  arrow.hidden = true;
+  const name = bonus === 'return' ? 'P tree' : 'Stop ' + (index + 1);
+  let text = name + ' · Waiting for GPS';
+  if (demo) {
+    const [x, y] = trailPins[index];
+    const [fromX, fromY] = trailPins[progress - 1] || [x, y + 1];
+    arrow.style.transform = 'rotate(' + Math.atan2(x - fromX, fromY - y) * 180 / Math.PI + 'deg)';
+    arrow.hidden = false;
+    text = name + ' · Demo';
+  } else if (!Number.isFinite(target.lat) || !Number.isFinite(target.lon)) {
+    text = name + ' · GPS point pending';
+  } else if (lastFix && Date.now() - lastFix.timestamp <= 15000 && lastFix.coords.accuracy <= target.radius) {
+    const { latitude, longitude } = lastFix.coords;
+    const degrees = bearing(latitude, longitude, target);
+    const meters = Math.round(distance(latitude, longitude, target));
+    text = name + ' · ' + meters + ' m';
+    if (cameraHeading === null) {
+      text += ' ' + direction(degrees);
+    } else {
+      arrow.style.transform = 'rotate(' + (degrees - cameraHeading) + 'deg)';
+      arrow.hidden = false;
+    }
+  }
+  if ($('guide-label').textContent !== text) $('guide-label').textContent = text;
 }
 
 function routeProblem() {
@@ -107,6 +176,7 @@ function renderProgress() {
   renderBonus();
   document.documentElement.classList.toggle('has-color', progress > 0);
   renderTrail();
+  renderGuide();
   $('colors').replaceChildren(...stops.map((stop, i) => {
     const chip = document.createElement('li');
     chip.textContent = (i + 1) + ' · ' + stop.name + (i < progress ? ' ✓' : '');
@@ -132,21 +202,23 @@ function renderBonus() {
 }
 
 function onPosition({ coords, timestamp }) {
+  lastFix = { coords, timestamp };
   const { latitude, longitude, accuracy } = coords;
   if (scout) {
-    lastFix = { coords, timestamp };
     $('mark').disabled = accuracy > 25;
     status(latitude.toFixed(6) + ', ' + longitude.toFixed(6) + ' · ±' + Math.round(accuracy) + ' m');
     return;
   }
   const returning = bonus === 'return';
   const next = targets[returning ? bonusStop : progress];
+  renderGuide();
   if (!next) return;
   if (returning) {
     if (Date.now() - timestamp <= 15000 && accuracy <= next.radius &&
         distance(latitude, longitude, next) <= next.radius) {
       bonus = 'collected';
       renderBonus();
+      renderGuide();
       stopWatch();
       status('You found the P tree! Bonus Reunion is ready.');
       showModel(window.FINALE, window.FINALE.name);
@@ -163,7 +235,7 @@ function onPosition({ coords, timestamp }) {
     const wrong = targets.findIndex((target, i) => i > progress &&
       accuracy <= target.radius && distance(latitude, longitude, target) <= target.radius);
     status(wrong >= 0 ? 'Stop ' + (wrong + 1) + ' is locked. Visit ' + label + ' first.'
-      : label + ' · ' + Math.round(d) + ' m away · head ' + direction(latitude, longitude, next));
+      : label + ' · ' + Math.round(d) + ' m away · head ' + direction(bearing(latitude, longitude, next)));
     return;
   }
 
@@ -208,6 +280,8 @@ function setCameraPanel(open) {
 function stopCamera() {
   cameraStream?.getTracks().forEach((track) => track.stop());
   cameraStream = null;
+  cameraHeading = null;
+  renderGuide();
   $('camera').srcObject = null;
   $('camera').hidden = true;
   document.body.classList.remove('camera-on');
@@ -227,6 +301,7 @@ async function startCamera() {
   if (cameraPending) return;
   if (!navigator.mediaDevices?.getUserMedia) return status('The camera needs a secure page (HTTPS).');
   cameraPending = true;
+  void enableCompass();
   try {
     cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' } }, audio: false });
     $('camera').srcObject = cameraStream;
@@ -234,6 +309,7 @@ async function startCamera() {
     document.body.classList.add('camera-on');
     setCameraPanel(false);
     $('camera-hud').hidden = false;
+    renderGuide();
     $('cameraToggle').textContent = 'Turn off camera';
   } catch {
     status('Camera unavailable. You can continue with the map.');
@@ -248,6 +324,7 @@ $('finale').onclick = $('camera-bonus').onclick = () => {
   if (bonus === 'collected') return showModel(window.FINALE, window.FINALE.name);
   bonus = 'return';
   renderBonus();
+  renderGuide();
   status(bonusClue);
 };
 
