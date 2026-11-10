@@ -32,7 +32,6 @@ figure { margin: 0 0 14px; border-radius: 14px; overflow: hidden; }
 .trail-map figcaption { background: #fff5e4; }
 .trail-map figcaption { display: grid; gap: .12rem; padding: .7rem .9rem; font-size: .9rem; }
 .trail-map figcaption strong { font-family: Georgia, serif; font-size: 1.25rem; }
-.site-credit { padding: .45rem .65rem; font-size: .75rem; }
 .trail-edge, .trail-line { fill: none; stroke-linecap: round; stroke-linejoin: round; }
 .trail-edge { stroke: #754528; stroke-width: 10; }
 .trail-line { stroke: #f8c44f; stroke-width: 6; }

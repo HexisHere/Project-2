@@ -93,14 +93,14 @@ function renderGuide() {
   const arrow = $('guide-arrow');
   guide.hidden = !cameraStream || scout || !target;
   if (guide.hidden) return;
-  arrow.hidden = true;
+  arrow.setAttribute('hidden', '');
   const name = bonus === 'return' ? 'P tree' : 'Stop ' + (index + 1);
   let text = name + ' · Waiting for GPS';
   if (demo) {
     const [x, y] = trailPins[index];
     const [fromX, fromY] = trailPins[progress - 1] || [x, y + 1];
     arrow.style.transform = 'rotate(' + Math.atan2(x - fromX, fromY - y) * 180 / Math.PI + 'deg)';
-    arrow.hidden = false;
+    arrow.removeAttribute('hidden');
     text = name + ' · Demo';
   } else if (!Number.isFinite(target.lat) || !Number.isFinite(target.lon)) {
     text = name + ' · GPS point pending';
@@ -113,7 +113,7 @@ function renderGuide() {
       text += ' ' + direction(degrees);
     } else {
       arrow.style.transform = 'rotate(' + (degrees - cameraHeading) + 'deg)';
-      arrow.hidden = false;
+      arrow.removeAttribute('hidden');
     }
   }
   if ($('guide-label').textContent !== text) $('guide-label').textContent = text;
