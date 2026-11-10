@@ -23,6 +23,7 @@ const trailPaths = [
   'M540 314 L380 487'
 ];
 let progress = 0;
+let endingShown = false;
 const bonusStop = 2; // Stop 3, the P tree.
 let bonus = 'locked';
 const bonusClue = 'Remember the tree with a connection to the letter P? Go back there to find the Bonus Reunion.';
@@ -372,7 +373,12 @@ function showModel(stop, title) {
   }
   if (!$('reward').open) $('reward').showModal();
 }
-$('reward').addEventListener('close', () => $('preview').replaceChildren());
+$('reward').addEventListener('close', () => {
+  $('preview').replaceChildren();
+  if (progress !== stops.length || endingShown) return;
+  endingShown = true;
+  playStory($('story-ending'));
+});
 
 if (scout) {
   $('scout').hidden = false;
@@ -412,6 +418,7 @@ if (scout) {
   });
   $('reset').onclick = () => {
     progress = 0;
+    endingShown = false;
     bonus = 'locked';
     renderProgress();
     status('Demo · Start at stop 1.');
@@ -424,8 +431,7 @@ window.addEventListener('pagehide', () => {
   stopWatch();
   stopCamera();
 });
-function playOpening() {
-  const opening = $('story-opening');
+function playStory(opening) {
   opening.showModal();
   if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -468,5 +474,5 @@ function playOpening() {
 }
 
 renderProgress();
-if (!scout) playOpening();
+if (!scout) playStory($('story-opening'));
 

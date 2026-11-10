@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Follow the P · The Oval</title>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
-  <link rel="stylesheet" href="style.css?v=story-typewriter">
+  <link rel="stylesheet" href="style.css?v=story-ending">
   <script defer src="stops.js?v=five-usdz"></script>
-  <script defer src="game.js?v=story-typewriter"></script>
+  <script defer src="game.js?v=story-ending"></script>
 </head>
 <body>
   <div class="world" aria-hidden="true">
@@ -73,14 +73,23 @@
     </div>
     <button id="camera-bonus" type="button" hidden></button>
   </aside>
-  <dialog id="story-opening" aria-labelledby="story-title">
+  <dialog id="story-opening" class="story-screen" aria-labelledby="story-title">
     <div class="story-copy">
       <p class="eyebrow">THE OHIO STATE UNIVERSITY · THE OVAL</p>
       <h2 id="story-title">The morning the colors disappeared</h2>
       <p class="story-line">You're an Ohio State student. One morning, you wake up and look out the window. The sky, the trees, even your favorite hoodie. Everything is suddenly black and white.</p>
       <p class="story-line">Then a little sprite whispers in your head.</p>
-      <p class="story-line sprite-line">“Five animals are hiding around the Oval. Find them in order, and they'll bring the colors back.”</p>
+      <p class="story-line sprite-line">“Your goal is to Follow the P! Find the five animals around the Oval in order, and they'll bring the colors back.”</p>
       <form method="dialog"><button type="submit" autofocus>Begin the walk</button></form>
+    </div>
+  </dialog>
+  <dialog id="story-ending" class="story-screen" aria-labelledby="ending-title">
+    <div class="story-copy">
+      <p class="eyebrow">FOLLOW THE P · THE OVAL</p>
+      <h2 id="ending-title">Congratulations! You followed the P.</h2>
+      <p class="story-line">All five colors are back. Take a moment to look around.</p>
+      <p class="story-line sprite-line">“Remember to enjoy everything in your life, even the little things.”</p>
+      <form method="dialog"><button type="submit" autofocus>Continue exploring</button></form>
     </div>
   </dialog>
   <dialog id="reward">

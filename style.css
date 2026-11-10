@@ -42,7 +42,7 @@ nav { padding: .7rem 1rem; border-radius: 14px; }
 a { color: #4b3948; }
 dialog { width: min(92vw, 580px); max-height: 92dvh; padding: 1.2rem; background: var(--paper); color: var(--ink); border: 0; border-radius: 20px; }
 dialog::backdrop { background: #211a1bc0; }
-#story-opening {
+.story-screen {
   inset: 0;
   width: 100%;
   height: 100%;
@@ -54,8 +54,8 @@ dialog::backdrop { background: #211a1bc0; }
   background: #000;
   color: #f8f5ee;
 }
-#story-opening[open] { display: flex; }
-#story-opening::backdrop { background: #000; }
+.story-screen[open] { display: flex; }
+.story-screen::backdrop { background: #000; }
 .story-copy { max-width: 34rem; margin: auto; }
 .story-copy h2 { font-size: clamp(2rem, 7vw, 3.5rem); }
 .story-copy p { line-height: 1.55; }
@@ -123,6 +123,7 @@ model-viewer button { position: absolute; bottom: 12px; left: 50%; transform: tr
 .camera-on.camera-panel-open:has(#camera-bonus:not([hidden])) main { bottom: calc(9rem + env(safe-area-inset-bottom)); }
 .camera-on dialog { background: #fafafae0; }
 .camera-on dialog::backdrop { background: #211a1b35; }
+.camera-on .story-screen, .camera-on .story-screen::backdrop { background: #000; }
 .camera-on model-viewer { background: transparent; }
 .demo-heading { margin-bottom: .35rem; }
 
